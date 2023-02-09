@@ -22,23 +22,23 @@ import (
 //emma 2nji funksiya channelden data garashyp durka 1nji funksiya oz ishini dowam edyar, ishini bitirip cykyp gidyar
 
 func main() {
-	kahramanlar := []string{"Marvel", "Flash", "Thanos", "Flash"}
-	ilkKanalim := make(chan string)
+	teams := []string{"Marvel", "Flash", "Thanos", "Flash"}
+	firstChannel := make(chan string)
 
-	// Bulucu
-	go func(dizi []string) {
-		for _, kahraman := range dizi {
-			ilkKanalim <- kahraman // Kanala gönderiliyor
-			fmt.Println(kahraman)
+	// SENDER
+	go func(teams []string) {
+		for _, team := range teams {
+			firstChannel <- team // sending to channel
+			fmt.Println(team)
 			time.Sleep(time.Second)
 		}
-	}(kahramanlar)
+	}(teams)
 
-	// Alıcı
+	// RECEIVER
 	go func() {
 		for i := 0; i < 4; i++ {
-			// bulunan := <-ilkKanalim // Kanaldan alınıyor
-			// fmt.Println("Alici: Bulucudan " + bulunan + " alindi")
+			found := <-firstChannel // receiving from channel
+			fmt.Println("Receiver: Received " + found + " from SENDER")
 			fmt.Println("hello")
 		}
 	}()
